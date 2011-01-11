@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Snake</title>
+        <style TYPE="text/css">
+            body {
+                background-color:#AFA9A4;
+                text-align: center;
+            }
+            #xcCanvas {
+                background-color:#FFFFFF;
+                border: 1px solid #000;
+            }
+            div#images img{
+                display:none;
+                }
+        </style>
+
+        <script type="text/javascript">
+            var itemsToLoad = 1;
+            var canvasWidth = 480;
+            var canvasHeight = 480;
+        </script>
+        <script type="text/javascript" src="lib/jquery-1.4.2.min.js"></script>
+        <script type="text/javascript" src="main.js"></script>
+        <script type="text/javascript" src="lib/xc.js"></script>
+        <script type="text/javascript" src="lib/xc_canvas.js"></script>
+    </head>
+    <body>
+
+        <canvas id="xcCanvas" width=480 height=480>
+            <p>Your browser does not support canvas. :-(</p>
+        </canvas>
+
+    <div id="images">
+    <img src="/resources/snake_point.png" onLoad="itemLoaded(this);"/>
+    </div>
+    </body>
+</html>
+
+
