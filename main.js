@@ -1,19 +1,23 @@
 
 $.position_x = 100
 $.position_y = 100
-$.speed = 5
+$.step = 16
+$.speed = 0.5
 
 function main()
 {
     var scene = xc.getCurrentScene();
-    snake_point = new XCSpriteNode('snake_point.png');
+    var snake = new Array()
+    createSnakePoint();
+    createSnakePoint();
+    createSnakePoint();
+    createSnakePoint();
+    
     direction = 'right'
-    scene.addChild(snake_point);
-    snake_point.moveTo($.position_x, $.position_y);
 
-    scene.schedule(moveByDirection, 0.1);
+    scene.schedule(moveByDirection, 0.3);
     scene.schedule(checkGameEnd, 0.1);
-    scene.schedule(speedUp, 10);
+    //scene.schedule(speedUp, 2);
 
     scene.keyDown = function(key){
         switch (key.key) {
@@ -35,33 +39,57 @@ function main()
     xc.addEventListener('keyDown', scene);
 
     function moveByDirection(){
+        moveSnakeBody()
         switch (direction) {
             case "right":
-                snake_point.moveBy($.speed,0)
+                snakeHead().moveBy($.step,0)
                 break;
             case "left":
-                snake_point.moveBy(-$.speed,0)
+                snakeHead().moveBy(-$.step,0)
                 break;
             case "up":
-                snake_point.moveBy(0,-$.speed)
+                snakeHead().moveBy(0,-$.step)
                 break;
             case "down":
-                snake_point.moveBy(0,$.speed)
+                snakeHead().moveBy(0,$.step)
                 break;
         }
+        
     }
 
     function speedUp(){
-        $.speed += 1
+        $.step += 10
+        
     }
 
     function checkGameEnd(){
-        if ((snake_point.X() < 0) || (snake_point.Y() < 0) || (snake_point.X() > 480) || (snake_point.Y() > 480))
+        if ((snakeHead().X() < 0) || (snakeHead().Y() < 0) || (snakeHead().X() > 480) || (snakeHead().Y() > 480))
         {
             scene.pause();
-            alert('Lose')
+            alert('You lose')
         }
 
     }
-    
+
+    function createSnakePoint(){
+        new_snake_point = new XCSpriteNode('snake_point.png')
+        snake[snake.length] = new_snake_point;
+        scene.addChild(new_snake_point);
+    }
+
+    function snakeHead(){
+        return snake[0];
+    }
+
+    function moveSnakeBody(){
+        var index=snake.length-1;
+        for (index=snake.length-1;index>=0;index--)
+        {
+            if (index > 0) {
+                previous_snake_point = snake[index-1];
+                snake[index].moveTo(previous_snake_point.X(), previous_snake_point.Y())
+            }
+        }
+
+    }
 }
