@@ -1,21 +1,22 @@
 
 $.position_x = 100
 $.position_y = 100
-$.step = 16
+$.step = 15
 $.speed = 0.5
 
 function main()
 {
     var scene = xc.getCurrentScene();
     var snake = new Array()
-    createSnakePoint();
-    createSnakePoint();
-    createSnakePoint();
+    var food = null
+
     createSnakePoint();
     
     direction = 'right'
 
     scene.schedule(moveByDirection, 0.3);
+    scene.schedule(checkCollision, 0.3);
+    scene.schedule(createFood, 6);
     scene.schedule(checkGameEnd, 0.1);
     //scene.schedule(speedUp, 2);
 
@@ -76,6 +77,28 @@ function main()
         snake[snake.length] = new_snake_point;
         scene.addChild(new_snake_point);
     }
+
+    function createFood(){
+        if (food == null){
+        food = new XCSpriteNode('snake_point.png');
+        food.moveTo(randomNumber(), randomNumber())
+        scene.addChild(food);
+        }
+    }
+
+    function randomNumber(){
+        return Math.floor(Math.random()*11)*30
+    }
+
+
+    function checkCollision(){
+        if ((food != null) && ( snakeHead().X() == food.X() && snakeHead().Y() == food.Y() )){
+            scene.removeChild(food);
+            food = null;
+            createSnakePoint();
+        }
+    }
+
 
     function snakeHead(){
         return snake[0];
